@@ -1,0 +1,9 @@
+/* Reset and base styles - minimal to avoid conflicts with App.css */
+body {
+  margin: 0;
+  min-height: 100vh;
+}
+
+#root {
+  min-height: 100vh;
+}
