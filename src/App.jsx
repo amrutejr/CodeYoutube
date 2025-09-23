@@ -421,7 +421,7 @@ document.addEventListener('DOMContentLoaded', function() {
   return (
     <div className={`app ${isDarkMode ? 'dark' : 'light'}`}>
       <header className="header">
-        <h1>CodeYouTube 🎥💻</h1>
+        <h1>CodeYouTube</h1>
         
         <div className="header-controls">
           {/* Panel Visibility Controls */}
