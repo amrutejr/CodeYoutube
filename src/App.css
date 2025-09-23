@@ -5,7 +5,7 @@
   --bg-tertiary: #e9ecef;
   --text-primary: #212529;
   --text-secondary: #6c757d;
-  --accent-color: #007bff;
+  --accent-color: #ff0000;
   --accent-hover: #0056b3;
   --border-color: #dee2e6;
   --shadow: 0 2px 10px rgba(0, 0, 0, 0.1);
@@ -20,7 +20,7 @@
   --text-primary: #ffffff;
   --text-secondary: #b3b3b3;
   --accent-color: #4dabf7;
-  --accent-hover: #339af0;
+  --accent-hover: #f03333;
   --border-color: #404040;
   --shadow: 0 2px 10px rgba(0, 0, 0, 0.3);
   --shadow-hover: 0 4px 20px rgba(0, 0, 0, 0.4);
@@ -325,6 +325,18 @@ body {
   transform: none;
 }
 
+.current-video-title {
+  font-size: 0.85rem;
+  color: var(--text-primary);
+  font-weight: 500;
+  margin-top: 0.25rem;
+  display: block;
+}
+
+.nav-button {
+  min-width: 100px;
+}
+
 .video-container {
   flex: 1;
   position: relative;
@@ -410,12 +422,19 @@ body {
   background-color: var(--bg-tertiary);
 }
 
+.preview-controls {
+  display: flex;
+  gap: 0.5rem;
+  align-items: center;
+}
+
 .preview-header span {
   font-weight: 600;
   color: var(--text-primary);
 }
 
-.preview-refresh {
+.preview-refresh,
+.preview-fullscreen {
   padding: 0.5rem 1rem;
   background-color: var(--accent-color);
   color: white;
@@ -424,9 +443,13 @@ body {
   cursor: pointer;
   font-size: 0.9rem;
   transition: var(--transition);
+  display: flex;
+  align-items: center;
+  gap: 0.25rem;
 }
 
-.preview-refresh:hover {
+.preview-refresh:hover,
+.preview-fullscreen:hover {
   background-color: var(--accent-hover);
   transform: scale(1.05);
 }
@@ -444,23 +467,6 @@ body {
   background-color: white;
 }
 
-/* Shortcuts Info */
-.shortcuts-info {
-  background-color: var(--bg-secondary);
-  border-top: 1px solid var(--border-color);
-  padding: 0.75rem 2rem;
-  text-align: center;
-}
-
-.shortcuts-info p {
-  margin: 0;
-  font-size: 0.85rem;
-  color: var(--text-secondary);
-}
-
-.shortcuts-info strong {
-  color: var(--text-primary);
-}
 
 /* Responsive Design */
 @media (max-width: 1200px) {
@@ -542,14 +548,6 @@ body {
   .video-controls input {
     margin-bottom: 0.5rem;
   }
-  
-  .shortcuts-info {
-    padding: 0.5rem 1rem;
-  }
-  
-  .shortcuts-info p {
-    font-size: 0.75rem;
-  }
 }
 
 @media (max-width: 480px) {
@@ -598,3 +596,75 @@ body {
 ::-webkit-scrollbar-thumb:hover {
   background: var(--accent-color);
 }
+
+/* Fullscreen Preview Styles */
+.fullscreen-overlay {
+  position: fixed;
+  top: 0;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  background-color: var(--bg-primary);
+  z-index: 1000;
+  display: flex;
+  flex-direction: column;
+  animation: fadeIn 0.3s ease-out;
+}
+
+.fullscreen-header {
+  background-color: var(--bg-secondary);
+  border-bottom: 1px solid var(--border-color);
+  padding: 1rem 2rem;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  box-shadow: var(--shadow);
+}
+
+.fullscreen-header span {
+  font-weight: 600;
+  color: var(--text-primary);
+  font-size: 1.1rem;
+}
+
+.fullscreen-controls {
+  display: flex;
+  gap: 0.5rem;
+  align-items: center;
+}
+
+.fullscreen-exit {
+  padding: 0.5rem 1rem;
+  background-color: var(--accent-color);
+  color: white;
+  border: none;
+  border-radius: 6px;
+  cursor: pointer;
+  font-size: 0.9rem;
+  transition: var(--transition);
+  display: flex;
+  align-items: center;
+  gap: 0.25rem;
+}
+
+.fullscreen-exit:hover {
+  background-color: var(--accent-hover);
+  transform: scale(1.05);
+}
+
+.fullscreen-preview {
+  flex: 1;
+  background-color: white;
+  margin: 1rem;
+  border-radius: 8px;
+  overflow: hidden;
+  box-shadow: var(--shadow);
+}
+
+.fullscreen-preview iframe {
+  width: 100%;
+  height: 100%;
+  border: none;
+  background-color: white;
+}
+
