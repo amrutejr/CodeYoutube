@@ -5,7 +5,7 @@ import './App.css'
 function App() {
   const [youtubeUrl, setYoutubeUrl] = useState('')
   const [videoId, setVideoId] = useState('')
-  const [isLoading, setIsLoading] = useState(false)
+  const [isLoading] = useState(false)
   const [activeTab, setActiveTab] = useState('html')
   const [isDarkMode, setIsDarkMode] = useState(false)
   const [panelWidths, setPanelWidths] = useState({
