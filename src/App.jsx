@@ -54,12 +54,9 @@ p {
     text-align: center;
     font-size: 18px;
 }`,
-    javascript: `// Welcome to CodeYouTube!
-// Write your JavaScript code here
 
-console.log('Hello from CodeYouTube!');
+    javascript: `console.log('Hello from CodeYouTube!');
 
-// Example: Add interactivity
 document.addEventListener('DOMContentLoaded', function() {
     const h1 = document.querySelector('h1');
     if (h1) {
@@ -73,26 +70,22 @@ document.addEventListener('DOMContentLoaded', function() {
   const previewRef = useRef(null)
   const fullscreenPreviewRef = useRef(null)
 
-  // Extract YouTube video ID from URL
   const extractVideoId = (url) => {
     const regex = /(?:youtube\.com\/(?:[^\/]+\/.+\/|(?:v|e(?:mbed)?)\/|.*[?&]v=)|youtu\.be\/)([^"&?\/\s]{11})/
     const match = url.match(regex)
     return match ? match[1] : null
   }
 
-
-  // Get URL parameters
   const getUrlParams = () => {
     const urlParams = new URLSearchParams(window.location.search)
     return {
-      v: urlParams.get('v'), // YouTube video ID
-      list: urlParams.get('list'), // YouTube playlist ID
-      index: urlParams.get('index'), // Video index in playlist
-      watch: urlParams.get('watch') // Alternative parameter name
+      v: urlParams.get('v'),
+      list: urlParams.get('list'),
+      index: urlParams.get('index'),
+      watch: urlParams.get('watch')
     }
   }
 
-  // Update browser URL with current video
   const updateBrowserUrl = (videoId) => {
     if (videoId) {
       const newUrl = `${window.location.origin}${window.location.pathname}?v=${videoId}`
@@ -103,7 +96,6 @@ document.addEventListener('DOMContentLoaded', function() {
     }
   }
 
-  // Load YouTube video
   const loadVideo = () => {
     const videoId = extractVideoId(youtubeUrl)
     
@@ -115,17 +107,13 @@ document.addEventListener('DOMContentLoaded', function() {
     }
   }
 
-
-  // Load video from URL parameters
   const loadVideoFromUrl = () => {
     const params = getUrlParams()
     let videoIdFromUrl = null
 
-    // Check for direct video ID in 'v' parameter
     if (params.v) {
       videoIdFromUrl = params.v
     }
-    // Check for 'watch' parameter (for URLs like ?watch=v=VIDEO_ID)
     else if (params.watch) {
       const watchParam = params.watch
       if (watchParam.startsWith('v=')) {
@@ -135,7 +123,6 @@ document.addEventListener('DOMContentLoaded', function() {
       }
     }
 
-    // Validate video ID format (YouTube video IDs are 11 characters)
     if (videoIdFromUrl && videoIdFromUrl.length === 11) {
       setVideoId(videoIdFromUrl)
       setYoutubeUrl(`https://www.youtube.com/watch?v=${videoIdFromUrl}`)
@@ -145,7 +132,6 @@ document.addEventListener('DOMContentLoaded', function() {
     return false
   }
 
-  // Navigate playlist (previous/next video)
   const navigatePlaylist = (direction) => {
     if (!isPlaylistMode || !playlistVideos.length) return
 
@@ -167,14 +153,12 @@ document.addEventListener('DOMContentLoaded', function() {
     }
   }
 
-  // Share current video URL
   const shareVideo = () => {
     if (videoId) {
       const shareUrl = `${window.location.origin}${window.location.pathname}?v=${videoId}`
       navigator.clipboard.writeText(shareUrl).then(() => {
         alert('Share URL copied to clipboard!')
       }).catch(() => {
-        // Fallback for browsers that don't support clipboard API
         const textArea = document.createElement('textarea')
         textArea.value = shareUrl
         document.body.appendChild(textArea)
@@ -188,7 +172,6 @@ document.addEventListener('DOMContentLoaded', function() {
     }
   }
 
-  // Handle code changes
   const handleCodeChange = (value) => {
     setCode(prev => ({
       ...prev,
@@ -196,7 +179,6 @@ document.addEventListener('DOMContentLoaded', function() {
     }))
   }
 
-  // Update preview
   const updatePreview = () => {
     const fullCode = `
       ${code.html}
@@ -204,7 +186,6 @@ document.addEventListener('DOMContentLoaded', function() {
       <script>${code.javascript}</script>
     `
     
-    // Update regular preview
     if (previewRef.current) {
       const iframe = previewRef.current
       const doc = iframe.contentDocument || iframe.contentWindow.document
@@ -214,7 +195,6 @@ document.addEventListener('DOMContentLoaded', function() {
       doc.close()
     }
     
-    // Update fullscreen preview if it exists
     if (fullscreenPreviewRef.current) {
       const iframe = fullscreenPreviewRef.current
       const doc = iframe.contentDocument || iframe.contentWindow.document
@@ -225,12 +205,10 @@ document.addEventListener('DOMContentLoaded', function() {
     }
   }
 
-  // Toggle dark mode
   const toggleDarkMode = () => {
     setIsDarkMode(!isDarkMode)
   }
 
-  // Reset panel sizes to default
   const resetPanels = () => {
     setPanelWidths({
       video: 33.33,
@@ -239,7 +217,6 @@ document.addEventListener('DOMContentLoaded', function() {
     })
   }
 
-  // Toggle panel visibility
   const togglePanelVisibility = (panel) => {
     setPanelVisibility(prev => ({
       ...prev,
@@ -247,12 +224,10 @@ document.addEventListener('DOMContentLoaded', function() {
     }))
   }
 
-  // Toggle fullscreen preview
   const toggleFullscreen = () => {
     setIsFullscreen(!isFullscreen)
   }
 
-  // Calculate dynamic widths based on visible panels
   const getVisiblePanels = () => {
     const visible = Object.entries(panelVisibility).filter(([_, isVisible]) => isVisible)
     return visible.map(([panel]) => panel)
@@ -269,7 +244,6 @@ document.addEventListener('DOMContentLoaded', function() {
       preview: visiblePanels.includes('preview') ? 100 : 0
     }
     
-    // Calculate proportional widths for visible panels
     const totalVisibleWidth = visiblePanels.reduce((sum, panel) => sum + panelWidths[panel], 0)
     const result = { video: 0, editor: 0, preview: 0 }
     
@@ -280,7 +254,6 @@ document.addEventListener('DOMContentLoaded', function() {
     return result
   }
 
-  // Resize functionality
   const handleMouseDown = (handle) => (e) => {
     e.preventDefault()
     e.stopPropagation()
@@ -295,7 +268,6 @@ document.addEventListener('DOMContentLoaded', function() {
     setStartX(e.clientX)
     setStartWidths({ ...panelWidths })
     
-    // Add visual feedback
     document.body.style.cursor = 'col-resize'
     document.body.style.userSelect = 'none'
   }
@@ -311,18 +283,15 @@ document.addEventListener('DOMContentLoaded', function() {
     const deltaX = e.clientX - startX
     const deltaPercentage = (deltaX / containerWidth) * 100
 
-    // Minimum and maximum width constraints
     const minWidth = 15
     const maxWidth = 70
 
     let newWidths = { ...startWidths }
 
     if (resizeHandle === 'video-editor') {
-      // Adjust video and editor panels, keep preview proportional
       const newVideoWidth = Math.max(minWidth, Math.min(maxWidth, startWidths.video + deltaPercentage))
       const newEditorWidth = Math.max(minWidth, Math.min(maxWidth, startWidths.editor - deltaPercentage))
       
-      // Ensure both panels respect constraints
       if (newVideoWidth >= minWidth && newVideoWidth <= maxWidth && 
           newEditorWidth >= minWidth && newEditorWidth <= maxWidth) {
         newWidths = {
@@ -332,11 +301,9 @@ document.addEventListener('DOMContentLoaded', function() {
         }
       }
     } else if (resizeHandle === 'editor-preview') {
-      // Adjust editor and preview panels, keep video fixed
       const newEditorWidth = Math.max(minWidth, Math.min(maxWidth, startWidths.editor + deltaPercentage))
       const newPreviewWidth = Math.max(minWidth, Math.min(maxWidth, startWidths.preview - deltaPercentage))
       
-      // Ensure both panels respect constraints
       if (newEditorWidth >= minWidth && newEditorWidth <= maxWidth && 
           newPreviewWidth >= minWidth && newPreviewWidth <= maxWidth) {
         newWidths = {
@@ -347,15 +314,12 @@ document.addEventListener('DOMContentLoaded', function() {
       }
     }
 
-    // Normalize to ensure total is 100%
     const total = newWidths.video + newWidths.editor + newWidths.preview
     if (total > 0) {
-      // Clear any existing timeout
       if (resizeTimeoutRef.current) {
         clearTimeout(resizeTimeoutRef.current)
       }
       
-      // Update immediately for smooth visual feedback
       setPanelWidths({
         video: (newWidths.video / total) * 100,
         editor: (newWidths.editor / total) * 100,
@@ -370,17 +334,14 @@ document.addEventListener('DOMContentLoaded', function() {
     setStartX(0)
     setStartWidths({ video: 0, editor: 0, preview: 0 })
     
-    // Remove visual feedback
     document.body.style.cursor = ''
     document.body.style.userSelect = ''
   }
 
-  // Add mouse event listeners for resizing
   useEffect(() => {
     if (isResizing) {
       document.addEventListener('mousemove', handleMouseMove)
       document.addEventListener('mouseup', handleMouseUp)
-      // Prevent text selection during resize
       document.addEventListener('selectstart', (e) => e.preventDefault())
     }
 
@@ -391,13 +352,10 @@ document.addEventListener('DOMContentLoaded', function() {
     }
   }, [isResizing, resizeHandle, startX, startWidths])
 
-
-  // Load video from URL parameters on component mount
   useEffect(() => {
     loadVideoFromUrl()
   }, [])
 
-  // Handle browser back/forward navigation
   useEffect(() => {
     const handlePopState = (event) => {
       if (event.state && event.state.videoId) {
@@ -412,7 +370,6 @@ document.addEventListener('DOMContentLoaded', function() {
     return () => window.removeEventListener('popstate', handlePopState)
   }, [])
 
-  // Auto-update preview when code changes
   useEffect(() => {
     const timer = setTimeout(updatePreview, 500)
     return () => clearTimeout(timer)
@@ -421,7 +378,22 @@ document.addEventListener('DOMContentLoaded', function() {
   return (
     <div className={`app ${isDarkMode ? 'dark' : 'light'}`}>
       <header className="header">
-        <h1>CodeYouTube</h1>
+        <div className="header-title">
+          <h1>CodeYouTube</h1>
+          <a 
+            href="https://www.producthunt.com/products/code-youtube?embed=true&utm_source=badge-featured&utm_medium=badge&utm_source=badge-code&#0045;youtube" 
+            target="_blank" 
+            rel="noopener noreferrer"
+            className="producthunt-badge"
+          >
+            <img 
+              src={`https://api.producthunt.com/widgets/embed-image/v1/featured.svg?post_id=1022027&theme=${isDarkMode ? 'dark' : 'light'}&t=${Date.now()}`} 
+              alt="Code&#0032;Youtube - Coding&#0032;along&#0032;with&#0032;your&#0032;tutorial | Product Hunt" 
+              width="250" 
+              height="54" 
+            />
+          </a>
+        </div>
         
         <div className="header-controls">
           {/* Panel Visibility Controls */}
